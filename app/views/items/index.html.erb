@@ -23,7 +23,7 @@
         <td><%= image_tag item.image.url(:medium) %></td>
         <td><%= link_to 'Show', item %></td>
         <td><%= link_to 'Edit', edit_item_path(item) if current_user and current_user.has_role? :admin %></td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: {confirm: 'Are you sure?'} if current_user and current_user.has_role? :admin %></td>
+        <td><%= link_to 'Destroy', item, method: :delete, data: {confirm: 'Are you sure?'} if current_user and current_user.has_role? :admin and item.bids.size ==0 %></td>
       </tr>
   <% end %>
   </tbody>
@@ -32,4 +32,7 @@
 <br>
 <%= paginate @items %>
 <%= link_to 'New Item', new_item_path if current_user and current_user.has_role? :admin %>
+
+
+
 

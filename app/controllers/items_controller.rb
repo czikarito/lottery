@@ -1,26 +1,20 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy, :draw]
 
-
-
   def index
     @q = Item.ransack(search_params)
     @items = @q.result(distinct: true).page params[:page]
-
-    # @search = Item.search(params[:q])
-    # @items = @search.result.page params[:page]
   end
-
 
   def draw
-    @winner = @item.lottery(@item)
+      winner = @item.lottery(@item)
+      @item.winner = winner.id
+      @item.save
+      UserMailer.send_win_confirmation(winner, @item).deliver_now
   end
-
 
   def create
     @item = Item.new(item_params)
-
-
     respond_to do |format|
       if @item.save
         format.html { redirect_to @item, notice: 'Item was successfully created.' }
@@ -59,8 +53,6 @@ class ItemsController < ApplicationController
     def set_item
       @item = Item.find(params[:id])
     end
-
-
 
   def search_params
     params.permit(q: [ :name_cont ])["q"].to_h

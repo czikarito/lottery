@@ -8,16 +8,13 @@ class Item < ApplicationRecord
   has_many :bids
   accepts_nested_attributes_for :bids , :reject_if => :all_blank, :allow_destroy => true
 
-
-
-
-
   def lottery(item)
     if item.bids.size >=2
       win = item.bids.order("RANDOM()").first
-      win.user_id
-
+      user = win.user
+      return user
     end
   end
+
 
 end
