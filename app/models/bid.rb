@@ -3,6 +3,6 @@ class Bid < ApplicationRecord
   belongs_to :user
   belongs_to :item
 
-  validates_uniqueness_of :bidding
+  validates :user_id, uniqueness: true
 
 end

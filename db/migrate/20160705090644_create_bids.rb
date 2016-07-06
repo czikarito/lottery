@@ -6,6 +6,9 @@ class CreateBids < ActiveRecord::Migration[5.0]
       t.integer :item_id
 
       t.timestamps
+
     end
+    add_index :bids, :user_id, unique: true
   end
+
 end

@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :draw]
 
 
 
@@ -11,8 +11,9 @@ class ItemsController < ApplicationController
     # @items = @search.result.page params[:page]
   end
 
-  def play
 
+  def draw
+    @winner = @item.lottery(@item)
   end
 
 

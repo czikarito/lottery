@@ -5,6 +5,10 @@ Rails.application.routes.draw do
     collection do
       match 'search' => 'items#search', via: [:get, :post], as: :search
     end
+    member do
+      post 'draw'
+    end
+
 
   end
 
@@ -17,4 +21,6 @@ Rails.application.routes.draw do
   end
 
   #post 'bind/index'
+
+
 end

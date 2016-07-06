@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20160705090644) do
     t.integer  "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_bids_on_user_id", unique: true
   end
 
   create_table "items", force: :cascade do |t|
