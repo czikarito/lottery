@@ -15,12 +15,8 @@ Rails.application.routes.draw do
   resources :users
 
   if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+    mount LetterOpenerWeb::Engine, at: '/letter_opener'
   end
 
-  # devise_scope :user do
-  #
-  # end
-  get 'main/index'
   get 'auctions/index'
 end
