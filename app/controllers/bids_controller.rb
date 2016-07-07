@@ -8,7 +8,7 @@ class BidsController < ApplicationController
   def create
    @item = Item.find(bid_params[:item_id])
    @bid = @item.bids.build(user: current_user)
-    binding.pry
+
     respond_to do |format|
 
       if @bid.save

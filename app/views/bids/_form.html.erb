@@ -1,3 +1,3 @@
 
-<%= link_to "Bid It", bids_path(bid: { item_id: @item.id}), method: :post %>
+<%= link_to "Bid It", bids_path(bid: { item_id: @item.id}), method: :post if current_user and @item.user_id.nil?%>
 

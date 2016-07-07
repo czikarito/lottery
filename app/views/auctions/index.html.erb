@@ -1,0 +1,20 @@
+<% if current_user %>
+    <h2>You won items</h2>
+    <% current_user.items.each do |item| %>
+        <li><%= item.name %></li>
+    <% end %>
+    <h2>You bidding items</h2>
+    <% current_user.bids.each do |bid|  %>
+        <li><%= bid.item.name %></li>
+    <% end %>
+
+    <h2>You lost items</h2>
+
+    <% @items.each  do |item| %>
+        <% if (item.user_id != current_user and item.user_id.present?) %>
+            <li><%= item.name %></li>
+        <% end %>
+    <% end %>
+
+
+<% end %>

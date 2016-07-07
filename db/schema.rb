@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160706112328) do
+ActiveRecord::Schema.define(version: 20160706175506) do
 
   create_table "bids", force: :cascade do |t|
     t.boolean  "bidding"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20160706112328) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.integer  "winner"
+    t.integer  "user_id"
   end
 
   create_table "roles", force: :cascade do |t|

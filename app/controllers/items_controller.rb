@@ -8,9 +8,9 @@ class ItemsController < ApplicationController
 
   def draw
       winner = @item.lottery(@item)
-      @item.winner = winner.id
+      @item.user_id = winner
       @item.save
-      UserMailer.send_win_confirmation(winner, @item).deliver_now
+      UserMailer.send_win_confirmation(@item).deliver_now
   end
 
   def create
@@ -26,7 +26,6 @@ class ItemsController < ApplicationController
     end
   end
 
-
   def update
     respond_to do |format|
       if @item.update(item_params)
@@ -38,7 +37,6 @@ class ItemsController < ApplicationController
       end
     end
   end
-
 
   def destroy
     @item.destroy

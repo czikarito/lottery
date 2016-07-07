@@ -8,8 +8,6 @@ Rails.application.routes.draw do
     member do
       post 'draw'
     end
-
-
   end
 
   root 'items#index'
@@ -20,7 +18,9 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
-  #post 'bind/index'
-
-
+  # devise_scope :user do
+  #
+  # end
+  get 'main/index'
+  get 'auctions/index'
 end

@@ -5,16 +5,15 @@ class Item < ApplicationRecord
   resourcify
 
   paginates_per 6
+  belongs_to :user
   has_many :bids
   accepts_nested_attributes_for :bids , :reject_if => :all_blank, :allow_destroy => true
 
   def lottery(item)
     if item.bids.size >=2
       win = item.bids.order("RANDOM()").first
-      user = win.user
+      user = win.user_id
       return user
     end
   end
-
-
 end

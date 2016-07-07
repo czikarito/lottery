@@ -8,5 +8,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :bids
+  has_many :items
 end
 

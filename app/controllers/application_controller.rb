@@ -8,10 +8,4 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:avatar])
     devise_parameter_sanitizer.permit(:account_update, keys: [:avatar])
   end
-
-
-   def current_item
-    return unless [:item]
-    @current_item ||= Item.find([:item_id])
-  end
 end
