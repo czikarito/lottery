@@ -19,7 +19,7 @@ user4 = User.create(email: 'user4@example.com', password: 'secret99', password_c
 admin = User.create(email: 'admin@example.com', password: 'secret99', password_confirmation: 'secret99')
 admin.add_role :admin
 
-20.times do |index|
+6.times do |index|
    item = Item.create(name: FFaker::Product.product_name, description: FFaker::Lorem.paragraphs.join("\n"))
 
    item.bids.create(user: user1)

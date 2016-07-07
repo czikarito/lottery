@@ -1,56 +1,39 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy, :draw]
+  respond_to :html, :json
+
+  expose :q, -> { Item.ransack(search_params) }
+  expose :items, -> { q.result(distinct: true).where(user_id: nil).page params[:page] }
+  expose :item
 
   def index
-    @q = Item.ransack(search_params)
-    @items = @q.result(distinct: true).where(user_id: nil).page params[:page]
   end
 
   def draw
-      winner = @item.lottery(@item)
-      @item.user_id = winner
-      @item.save
-      UserMailer.send_win_confirmation(@item).deliver_now
+      winner = item.lottery(item)
+      item.user_id = winner
+      item.save
+      UserMailer.send_win_confirmation(item).deliver_now
   end
 
   def create
-    @item = Item.new(item_params)
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
-        format.json { render :show, status: :created, location: @item }
-      else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
-    end
+    item.save
+    respond_with(item)
   end
 
   def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @item }
+      if item.update(item_params)
+        redirect_to item_path(item), notice: 'Item was successfully updated.'
       else
-        format.html { render :edit }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+        render :edit
       end
-    end
   end
 
   def destroy
-    @item.destroy
-    respond_to do |format|
-      format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    item.destroy
+    respond_with(item)
   end
 
   private
-
-    def set_item
-      @item = Item.find(params[:id])
-    end
 
   def search_params
     params.permit(q: [ :name_cont ])["q"].to_h
