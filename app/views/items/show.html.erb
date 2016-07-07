@@ -14,6 +14,7 @@
     <%= link_to "Run draw", draw_item_path(@item) , method: :post  if @item.bids.size >=2 and  @item.user_id.nil? %>
 <% else %>
     <%= link_to "Bid It", bids_path(bid: { item_id: @item.id}), method: :post if current_user and @item.user_id.nil?%>
+
 <% end %>
 
 <h2>List of bidders</h2>
@@ -22,5 +23,5 @@
 <% end %>
 
 
-<%= link_to 'Edit', edit_item_path(@item) if current_user and current_user.has_role? :admin %> |
+<%= link_to 'Edit', edit_item_path(@item) if is_admin? %> |
 <%= link_to 'Back', items_path %>

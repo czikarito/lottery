@@ -3,14 +3,14 @@ class ItemsController < ApplicationController
 
   def index
     @q = Item.ransack(search_params)
-    @items = @q.result(distinct: true).page params[:page]
+    @items = @q.result(distinct: true).where(user_id: nil).page params[:page]
   end
 
   def draw
-    winner = @item.lottery(@item)
-    @item.user_id = winner
-    @item.save
-    UserMailer.send_win_confirmation(@item).deliver_now
+      winner = @item.lottery(@item)
+      @item.user_id = winner
+      @item.save
+      UserMailer.send_win_confirmation(@item).deliver_now
   end
 
   def create
@@ -48,16 +48,15 @@ class ItemsController < ApplicationController
 
   private
 
-  def set_item
-    @item = Item.find(params[:id])
-  end
+    def set_item
+      @item = Item.find(params[:id])
+    end
 
   def search_params
-    params.permit(q: [:name_cont])["q"].to_h
+    params.permit(q: [ :name_cont ])["q"].to_h
   end
 
   def item_params
-    params.require(:item).permit(:name, :description, :image)
-  end
-
+      params.require(:item).permit(:name, :description, :image)
+    end
 end
