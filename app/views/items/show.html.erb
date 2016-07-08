@@ -1,27 +1,53 @@
-<p id="notice"><%= notice %></p>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4">
+        <%= image_tag item.image.url(:medium)%>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <tbody>
+          <tr>
+            <td><strong>Name:</strong></td>
+            <td><%=item.name %></td>
+          </tr>
+          <tr>
+            <td><strong>Description:</strong></td>
+            <td><%=item.description %></td>
+          </tr>
+          </tbody>
+        </table>
+        <% if is_admin? %>
+            <% if item.status == 'end' %>
+                <h2>Item won user <%= item.user.email %> </h2>
+            <% else %>
+            <%= button_to "Run draw", draw_item_path(item) , method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" if item.bids.size >=2 and  item.user_id.nil? %><br>
+            <%= link_to 'Edit Item', edit_item_path(item), class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" %>
+            <% end %>
+        <% else %>
+            <%= button_to "Bid It", bids_path(bid: { item_id: item.id}), method: :post, class: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" if current_user and item.user_id.nil?%>
 
-<p>
-  <strong>Name:</strong>
-  <%= item.name %>
-</p>
+      <% end %>
 
-<p>
-  <strong>Description:</strong>
-  <%= item.description %>
-</p>
-<%= image_tag item.image.url(:medium) %>
-<% if current_user and current_user.has_role? :admin %>
-    <%= link_to "Run draw", draw_item_path(item) , method: :post  if item.bids.size >=2 and  item.user_id.nil? %>
-<% else %>
-    <%= link_to "Bid It", bids_path(bid: { item_id: item.id}), method: :post if current_user and item.user_id.nil?%>
+      </div>
+    </div>
+  </div>
+</div>
 
-<% end %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>List of bidders:</h2>
+    <ul class="demo-list-icon mdl-list">
+    <% item.bids.each do |bid| %>
+      <li class="mdl-list__item">
+        <span class="mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-icon">person</i>
+          <%= bid.user.email %>
+        </span>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+</div>
 
-<h2>List of bidders</h2>
-<% item.bids.each do |bid| %>
-    <li><%= bid.user.email %></li>
-<% end %>
 
-
-<%= link_to 'Edit', edit_item_path(item) if is_admin? %> |
-<%= link_to 'Back', items_path %>

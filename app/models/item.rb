@@ -1,5 +1,5 @@
 class Item < ApplicationRecord
-  has_attached_file :image, styles: { medium: '400x600#' }
+  has_attached_file :image, styles: { medium: '300x300#' }
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
   resourcify

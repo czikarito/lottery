@@ -1,31 +1,22 @@
 <p id="notice"><%= notice %></p>
 <%= render 'search' %>
-<h1>Items</h1>
+<h1 class="section-title">Auctions</h1>
 
-<table>
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th colspan="3"></th>
-  </tr>
-  </thead>
 
-  <tbody>
+<div class="row">
   <% items.each do |item| %>
-      <tr>
-          <td><%= item.name %></td>
-          <td><%= item.description %></td>
-          <td><%= image_tag item.image.url(:medium) %></td>
-          <td><%= link_to 'Show', item %></td>
-          <td><%= link_to 'Edit', edit_item_path(item) if is_admin? %></td>
-          <td><%= link_to 'Destroy', item, method: :delete, data: {confirm: 'Are you sure?'} if is_admin? and item.bids.size ==0 %></td>
-      </tr>
+      <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+          <%= link_to (image_tag item.image.url(:medium), class: 'image'), item %>
+          <div class="mdl-card__actions mdl-card--border">
+          </div>
+          <h2 class="mdl-card__title-text"><%= item.name %></h2>
+        </div>
+      </div>
   <% end %>
-  </tbody>
-</table>
+</div>
 
-<br>
+
 <%= paginate items %>
 <%= link_to 'New Item', new_item_path if is_admin? %>
 

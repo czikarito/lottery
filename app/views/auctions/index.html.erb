@@ -1,18 +1,32 @@
 <% if current_user %>
-    <h2>You won items</h2>
-    <% won_items.each do |item| %>
-        <li><%= item.name %></li>
-    <% end %>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h2>You won items:</h2>
+        <ul class="demo-list-item mdl-list">
+          <% won_items.each do |item| %>
+              <li class="mdl-list__item">
+                <%= item.name %>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
 
 
-    <h2>You bidding items</h2>
-    <% binding_items.each do |item| %>
-        <li><%= item.name %></li>
-    <% end %>
 
-    <h2>You lost items</h2>
-    <% lost_items.each do |item| %>
-        <li><%= item.name %></li>
-    <% end %>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h2>You lost items:</h2>
+        <ul class="demo-list-item mdl-list">
+          <% lost_items.each do |item| %>
+              <li class="mdl-list__item">
+                <%= item.name %>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+
 
 <% end %>

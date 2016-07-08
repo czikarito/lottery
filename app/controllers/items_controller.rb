@@ -11,8 +11,10 @@ class ItemsController < ApplicationController
   def draw
       winner = item.lottery(item)
       item.user_id = winner
+      item.status = 'end'
       item.save
       UserMailer.send_win_confirmation(item).deliver_now
+      redirect_to item_path(item)
   end
 
   def create
