@@ -18,4 +18,11 @@ RSpec.describe ItemsController, type: :controller do
       it { expect(controller.items).to contain_exactly(item) }
     end
   end
+
+  describe '#show' do
+    let(:item) { create(:item) }
+    let(:call_request) { get :show, params: {id: item.id}}
+
+    it_behaves_like "an action rendering view"
+  end
 end
