@@ -31,14 +31,22 @@ RSpec.describe ItemsController, type: :controller do
 
     context 'when logged in as admin' do
       let!(:admin) { create(:admin) }
-      before do
-        sign_in admin
-        delete :destroy, params: { id: item.id }
+      context 'when is no bidders' do
+        let(:call_request) { delete :destroy, params: { id: item.id } }
+        before { sign_in admin }
+
+        it_behaves_like 'an action destroying object'
       end
 
-      it { expect(controller.items).not_to include(item) }
-    end
+      context 'when is at least one bidder' do
+        let(:user) { create(:user) }
+        let!(:bid) { item.bids.create(user: user) }
+        before { sign_in admin }
+        let(:call_request) { delete :destroy, params: { id: item.id } }
 
+        it_behaves_like 'an action destroying object', expect_failure: true
+      end
+    end
     context 'when logged in as regular user' do
       let!(:user) { create(:user) }
       let(:call_request) { delete :destroy, params: { id: item.id } }
@@ -104,14 +112,14 @@ RSpec.describe ItemsController, type: :controller do
       let(:call_request) { patch :update, id: item.id, item: attributes }
 
       it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
-      it_behaves_like 'an action redirecting to', -> { items_path}
+      it_behaves_like 'an action redirecting to', -> { items_path }
     end
 
     context 'when guest' do
-    let(:call_request) { patch :update, id: item.id, item: attributes }
+      let(:call_request) { patch :update, id: item.id, item: attributes }
 
-    it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
-    it_behaves_like 'an action redirecting to', -> { new_user_session_path}
+      it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
+      it_behaves_like 'an action redirecting to', -> { new_user_session_path }
+    end
   end
-end
 end

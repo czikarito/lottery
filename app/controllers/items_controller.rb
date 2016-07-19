@@ -39,7 +39,7 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    if current_user && current_user.has_role?(:admin)
+    if current_user && current_user.has_role?(:admin) && item.bids.count == 0
       item.destroy
       respond_with(item)
     elsif current_user
