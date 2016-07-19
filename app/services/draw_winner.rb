@@ -1,0 +1,3 @@
+class DrawWinner
+
+end
