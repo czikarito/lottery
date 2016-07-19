@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'therubyracer'
 gem 'rails', '~> 5.0.0'
 gem 'sqlite3'
 gem 'puma', '~> 3.0'
@@ -43,5 +42,4 @@ gem 'rubocop'
 gem 'simple_form'
 gem 'material_design_lite-sass'
 gem 'decent_exposure', '3.0.0'
-gem 'therubyracer'
 gem 'pry'
