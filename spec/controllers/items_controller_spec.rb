@@ -28,13 +28,31 @@ RSpec.describe ItemsController, type: :controller do
 
   describe '#destroy' do
     let!(:item) { create(:item) }
-    let!(:admin) { create(:admin) }
-    before {
-      sign_in admin
-      delete :destroy, params: { id: item.id}
-    }
 
-    it { expect(controller.items).not_to include(item) }
+    context 'when logged in as admin' do
+      let!(:admin) { create(:admin) }
+      before do
+        sign_in admin
+        delete :destroy, params: { id: item.id }
+      end
 
+      it { expect(controller.items).not_to include(item) }
     end
+
+    context 'when logged in as regular user' do
+      let!(:user) { create(:user) }
+      let(:call_request) { delete :destroy, params: { id: item.id } }
+      before {sign_in user}
+
+      it_behaves_like 'an action destroying object', expect_failure: true
+      it_behaves_like 'an action redirecting to', -> { item_path item }
+    end
+
+    context 'when guest' do
+      let(:call_request) { delete :destroy, params: {id: item.id} }
+
+      it_behaves_like 'an action destroying object', expect_failure: true
+      it_behaves_like 'an action redirecting to', -> { new_user_session_path}
+    end
+  end
 end
