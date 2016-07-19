@@ -42,17 +42,29 @@ RSpec.describe ItemsController, type: :controller do
     context 'when logged in as regular user' do
       let!(:user) { create(:user) }
       let(:call_request) { delete :destroy, params: { id: item.id } }
-      before {sign_in user}
+      before { sign_in user }
 
       it_behaves_like 'an action destroying object', expect_failure: true
       it_behaves_like 'an action redirecting to', -> { item_path item }
     end
 
     context 'when guest' do
-      let(:call_request) { delete :destroy, params: {id: item.id} }
+      let(:call_request) { delete :destroy, params: { id: item.id } }
 
       it_behaves_like 'an action destroying object', expect_failure: true
-      it_behaves_like 'an action redirecting to', -> { new_user_session_path}
+      it_behaves_like 'an action redirecting to', -> { new_user_session_path }
+    end
+  end
+
+  describe '#create' do
+    let!(:item) { build(:item) }
+    context 'when logged in as admin' do
+      let!(:admin) { create(:admin) }
+      let(:attributes) { attributes_for(:item)}
+      let(:call_request) { post :create, item: attributes }
+
+      it_behaves_like 'an action creating object'
+      it_behaves_like 'an action redirecting to', -> { item_path controller.item }
     end
   end
 end
