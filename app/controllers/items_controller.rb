@@ -11,10 +11,8 @@ class ItemsController < ApplicationController
   end
 
   def draw
-    winner = item.lottery(item)
-    item.user_id = winner
-    item.save
-    UserMailer.send_win_confirmation(item).deliver_now
+    draw_winner = DrawWinner.new(item)
+    draw_winner.rand_winner
   end
 
   def create
@@ -29,8 +27,8 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-      item.destroy
-      respond_with(item)
+    item.destroy
+    respond_with(item)
   end
 
   private
@@ -42,9 +40,7 @@ class ItemsController < ApplicationController
   end
 
   def count_bids
-    unless item.bids.count == 0
-      redirect_to item_path item
-    end
+    redirect_to item_path item unless item.bids.count == 0
   end
 
   def search_params
