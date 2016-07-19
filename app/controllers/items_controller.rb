@@ -9,31 +9,37 @@ class ItemsController < ApplicationController
   end
 
   def draw
-      winner = item.lottery(item)
-      item.user_id = winner
-      item.save
-      UserMailer.send_win_confirmation(item).deliver_now
+    winner = item.lottery(item)
+    item.user_id = winner
+    item.save
+    UserMailer.send_win_confirmation(item).deliver_now
   end
 
   def create
-    item.save
-    respond_with(item)
+    if current_user && current_user.has_role?(:admin)
+      item.save
+      respond_with(item)
+    elsif current_user
+      redirect_to items_path, notice: 'You cannot create item!'
+    else
+      redirect_to new_user_session_path
+    end
   end
 
   def update
-      if item.update(item_params)
-        redirect_to item_path(item), notice: 'Item was successfully updated.'
-      else
-        render :edit
-      end
+    if item.update(item_params)
+      redirect_to item_path(item), notice: 'Item was successfully updated.'
+    else
+      render :edit
+    end
   end
 
   def destroy
-    if current_user and current_user.has_role? :admin
+    if current_user && current_user.has_role?(:admin)
       item.destroy
       respond_with(item)
     elsif current_user
-      redirect_to item_path(item), notice: 'You cannot delete item'
+      redirect_to item_path(item), notice: 'You cannot delete item!'
     else
       redirect_to new_user_session_path
     end
@@ -42,10 +48,10 @@ end
   private
 
   def search_params
-    params.permit(q: [ :name_cont ])["q"].to_h
+    params.permit(q: [:name_cont])['q'].to_h
   end
 
   def item_params
-      params.require(:item).permit(:name, :description, :image)
+    params.require(:item).permit(:name, :description, :image)
     end
 end

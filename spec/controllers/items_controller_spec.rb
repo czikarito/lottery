@@ -58,13 +58,31 @@ RSpec.describe ItemsController, type: :controller do
 
   describe '#create' do
     let!(:item) { build(:item) }
+    let(:attributes) { attributes_for(:item) }
+
     context 'when logged in as admin' do
       let!(:admin) { create(:admin) }
-      let(:attributes) { attributes_for(:item)}
+      before { sign_in admin }
       let(:call_request) { post :create, item: attributes }
 
       it_behaves_like 'an action creating object'
-      it_behaves_like 'an action redirecting to', -> { item_path controller.item }
+      it_behaves_like 'an action redirecting to', -> { controller.item }
+    end
+
+    context 'when logged in as regular user' do
+      let!(:user) { create(:user) }
+      before { sign_in user}
+      let(:call_request) { post :create, item: attributes }
+
+      it_behaves_like 'an action creating object', expect_failure: true
+      it_behaves_like 'an action redirecting to', -> { items_path }
+    end
+
+    context 'when guest' do
+      let(:call_request) { post :create, item: attributes }
+
+      it_behaves_like 'an action creating object', expect_failure: true
+      it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
   end
 end
