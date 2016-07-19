@@ -27,11 +27,15 @@ class ItemsController < ApplicationController
   end
 
   def update
-    if item.update(item_params)
-      redirect_to item_path(item), notice: 'Item was successfully updated.'
+    if current_user && current_user.has_role?(:admin)
+      if item.update(item_params)
+        redirect_to item_path(item), notice: 'Item was successfully updated.'
+      end
+    elsif current_user
+      redirect_to items_path, notice: 'You cannot update item!'
     else
-      render :edit
-    end
+      redirect_to new_user_session_path
+      end
   end
 
   def destroy

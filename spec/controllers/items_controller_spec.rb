@@ -71,7 +71,7 @@ RSpec.describe ItemsController, type: :controller do
 
     context 'when logged in as regular user' do
       let!(:user) { create(:user) }
-      before { sign_in user}
+      before { sign_in user }
       let(:call_request) { post :create, item: attributes }
 
       it_behaves_like 'an action creating object', expect_failure: true
@@ -85,4 +85,33 @@ RSpec.describe ItemsController, type: :controller do
       it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
   end
+
+  describe '#update' do
+    let!(:item) { create(:item) }
+    let(:attributes) { attributes_for(:item) }
+    context 'when loggen in as admin' do
+      let!(:admin) { create(:admin) }
+      before { sign_in admin }
+      let(:call_request) { patch :update, id: item.id, item: attributes }
+
+      it_behaves_like 'an action updating object', [:name, :description]
+      it_behaves_like 'an action redirecting to', -> { item_path }
+    end
+
+    context 'when logged in as regular user' do
+      let!(:user) { create(:user) }
+      before { sign_in user }
+      let(:call_request) { patch :update, id: item.id, item: attributes }
+
+      it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
+      it_behaves_like 'an action redirecting to', -> { items_path}
+    end
+
+    context 'when guest' do
+    let(:call_request) { patch :update, id: item.id, item: attributes }
+
+    it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
+    it_behaves_like 'an action redirecting to', -> { new_user_session_path}
+  end
+end
 end
