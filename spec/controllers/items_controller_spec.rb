@@ -45,6 +45,7 @@ RSpec.describe ItemsController, type: :controller do
         let(:call_request) { delete :destroy, params: { id: item.id } }
 
         it_behaves_like 'an action destroying object', expect_failure: true
+        it_behaves_like 'an action redirecting to', -> { item_path item }
       end
     end
     context 'when logged in as regular user' do
@@ -53,7 +54,7 @@ RSpec.describe ItemsController, type: :controller do
       before { sign_in user }
 
       it_behaves_like 'an action destroying object', expect_failure: true
-      it_behaves_like 'an action redirecting to', -> { item_path item }
+      it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
 
     context 'when guest' do
@@ -83,7 +84,7 @@ RSpec.describe ItemsController, type: :controller do
       let(:call_request) { post :create, item: attributes }
 
       it_behaves_like 'an action creating object', expect_failure: true
-      it_behaves_like 'an action redirecting to', -> { items_path }
+      it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
 
     context 'when guest' do
@@ -112,7 +113,7 @@ RSpec.describe ItemsController, type: :controller do
       let(:call_request) { patch :update, id: item.id, item: attributes }
 
       it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
-      it_behaves_like 'an action redirecting to', -> { items_path }
+      it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
 
     context 'when guest' do
@@ -122,4 +123,12 @@ RSpec.describe ItemsController, type: :controller do
       it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
   end
+
+  # describe '#draw' do
+  #   let!(:admin) { create(:admin) }
+  #   let(:item) {create()}
+  #   context 'when admin can run' do
+  #
+  #   end
+
 end
