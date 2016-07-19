@@ -112,23 +112,15 @@ RSpec.describe ItemsController, type: :controller do
       before { sign_in user }
       let(:call_request) { patch :update, id: item.id, item: attributes }
 
-      it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
+      it_behaves_like 'an action updating object', expect_failure: true
       it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
 
     context 'when guest' do
       let(:call_request) { patch :update, id: item.id, item: attributes }
 
-      it_behaves_like 'an action updating object', [:name, :describtion], expect_failure: true
+      it_behaves_like 'an action updating object', expect_failure: true
       it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
   end
-
-  # describe '#draw' do
-  #   let!(:admin) { create(:admin) }
-  #   let(:item) {create()}
-  #   context 'when admin can run' do
-  #
-  #   end
-
 end
