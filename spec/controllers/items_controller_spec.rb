@@ -21,8 +21,20 @@ RSpec.describe ItemsController, type: :controller do
 
   describe '#show' do
     let(:item) { create(:item) }
-    let(:call_request) { get :show, params: {id: item.id}}
+    let(:call_request) { get :show, params: { id: item.id } }
 
-    it_behaves_like "an action rendering view"
+    it_behaves_like 'an action rendering view'
   end
+
+  describe '#destroy' do
+    let!(:item) { create(:item) }
+    let!(:admin) { create(:admin) }
+    before {
+      sign_in admin
+      delete :destroy, params: { id: item.id}
+    }
+
+    it { expect(controller.items).not_to include(item) }
+
+    end
 end

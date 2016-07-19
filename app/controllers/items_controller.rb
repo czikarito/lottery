@@ -29,9 +29,13 @@ class ItemsController < ApplicationController
   end
 
   def destroy
+    if current_user and current_user.has_role? :admin
     item.destroy
     respond_with(item)
+  else
+    redirect_to new_user_session_path
   end
+end
 
   private
 
