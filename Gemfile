@@ -13,6 +13,13 @@ gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem 'rspec-rails'
+  gem 'ffaker'
+  gem 'factory_girl_rails'
+  gem 'factory_girl'
+  gem 'rails-controller-testing'
+  gem 'guard-rspec'
+  gem 'selleo-controller_tests', github: 'Selleo/selleo-controller_tests'
 end
 
 group :development do
@@ -21,7 +28,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'pry-rails'
-  gem 'ffaker'
   gem 'letter_opener_web'
 end
 
@@ -33,7 +39,9 @@ gem 'cancancan'
 gem 'carrierwave'
 gem 'ransack', '~> 1.7'
 gem 'kaminari', '~> 0.17.0'
-gem 'rubocop', '~> 0.41.1'
+gem 'rubocop'
 gem 'simple_form'
 gem 'material_design_lite-sass'
 gem 'decent_exposure', '3.0.0'
+gem 'therubyracer'
+gem 'pry'
