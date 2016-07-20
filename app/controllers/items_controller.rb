@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
 
   def draw
     draw_winner = DrawWinner.new(item)
-    flash[:error] = draw_winner.errors unless draw_winner.call
+     call = draw_winner.call
   end
 
   def create

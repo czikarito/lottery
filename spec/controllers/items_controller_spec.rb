@@ -131,6 +131,7 @@ RSpec.describe ItemsController, type: :controller do
 
     context 'when cannot run draw' do
       it { expect(controller.item.user_id).to eql(nil) }
+      #it { expect}
     end
 
     context 'when can run draw' do
