@@ -11,8 +11,7 @@ class ItemsController < ApplicationController
   end
 
   def draw
-    draw_winner = DrawWinner.new(item)
-     call = draw_winner.call
+    DrawWinner.call(item: item)
   end
 
   def create
