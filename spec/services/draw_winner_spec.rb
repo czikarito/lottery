@@ -13,5 +13,4 @@ RSpec.describe 'DrawWinner' do
 
     it { expect([user1, user2]).to include(item.user) }
   end
-
 end

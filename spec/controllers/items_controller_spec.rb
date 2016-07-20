@@ -123,11 +123,27 @@ RSpec.describe ItemsController, type: :controller do
 
   describe '#draw' do
     let(:item) { create(:item) }
-    let(:admin) { create(:admin)}
+    let(:admin) { create(:admin) }
+    before do
+      sign_in admin
+      post :draw, params: { id: item.id }
+    end
 
     context 'when cannot run draw' do
-      let(:draw_winner) { DrawWinner.new(item) }
-      it { expect(draw_winner.rand_winner).to eql('You cannot run draw') }
+      it { expect(controller.item.user_id).to eql(nil) }
+    end
+
+    context 'when can run draw' do
+      let(:user1) { create(:user) }
+      let(:user2) { create(:user) }
+      let!(:bid1) { item.bids.create(user: user1) }
+      let!(:bid2) { item.bids.create(user: user2) }
+      before do
+        sign_in admin
+        post :draw, params: { id: item.id }
+      end
+
+      it { expect(controller.item.user_id).not_to eql(nil) }
     end
   end
 end
