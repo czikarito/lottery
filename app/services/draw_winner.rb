@@ -1,17 +1,16 @@
 class DrawWinner
-  attr_accessor :item
+  attr_accessor :item, :errors
 
   def initialize(item)
     @item = item
     @errors = []
   end
 
-  def errors
-    @errors
-  end
-
   def call
-    rand_winner if can_run_draw?
+    if can_run_draw?
+      rand_winner
+      send_mail
+    end
   end
 
   private
@@ -19,7 +18,6 @@ class DrawWinner
   def rand_winner
     winner = item.bids.order('RANDOM()').first
     item.user_id = winner.user_id
-    send_mail
   end
 
   def send_mail
