@@ -7,12 +7,4 @@ class Item < ApplicationRecord
   paginates_per 6
   belongs_to :user
   has_many :bids
-
-  def lottery(item)
-    if item.bids.size >= 2
-      win = item.bids.order('RANDOM()').first
-      user = win.user_id
-      return user
-    end
-  end
 end

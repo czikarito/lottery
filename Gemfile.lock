@@ -104,6 +104,8 @@ GEM
     ffaker (2.2.0)
     ffi (1.9.10)
     formatador (0.2.5)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     guard (2.14.0)
@@ -321,6 +323,7 @@ DEPENDENCIES
   factory_girl
   factory_girl_rails
   ffaker
+  friendly_id
   guard-rspec
   jbuilder (~> 2.5)
   jquery-rails
