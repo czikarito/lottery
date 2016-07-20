@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   respond_to :html, :json
-  before_action :authenticate_admin, only: [:destroy, :create, :update]
+  before_action :authenticate_admin, only: [:destroy, :create, :update, :draw]
   before_action :count_bids, only: [:destroy]
 
   expose :q, -> { Item.ransack(search_params) }

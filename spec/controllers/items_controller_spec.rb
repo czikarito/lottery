@@ -120,4 +120,14 @@ RSpec.describe ItemsController, type: :controller do
       it_behaves_like 'an action redirecting to', -> { new_user_session_path }
     end
   end
+
+  describe '#draw' do
+    let(:item) { create(:item) }
+    let(:admin) { create(:admin)}
+
+    context 'when cannot run draw' do
+      let(:draw_winner) { DrawWinner.new(item) }
+      it { expect(draw_winner.rand_winner).to eql('You cannot run draw') }
+    end
+  end
 end
