@@ -2,28 +2,31 @@ class ItemDecorator < Draper::Decorator
   delegate_all
   include Draper::LazyHelpers
 
-
-  # Define presentation-specific methods here. Helpers are accessed through
-  # `helpers` (aka `h`). You can override attributes, for example:
-  #
-  #   def created_at
-  #     helpers.content_tag :span, class: 'time' do
-  #       object.created_at.strftime("%a %m/%d/%y")
-  #     end
-  #   end
-
   def edit_link
-    if is_admin?
-      link_to 'Edit', edit_item_path(item)
-    end
+    link_to 'Edit', edit_item_path(item) if is_admin?
   end
 
   def delete_link
+    if is_admin?
+      link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }
+    end
   end
 
-private
+  def run_draw_or_bid
+    if is_admin?
+      link_to 'Run draw', draw_item_path(item), method: :post if can_run_draw?
+    else
+      link_to 'Bid It', bids_path(bid: { item_id: item.id }), method: :post if current_user
+    end
+  end
 
-def is_admin?
-  current_user and current_user.has_role? :admin
-end
+  private
+
+  def is_admin?
+    current_user && current_user.has_role?(:admin)
+  end
+
+  def can_run_draw?
+    item.bids.size >= 2 && item.user_id.nil?
+  end
 end

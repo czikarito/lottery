@@ -5,10 +5,7 @@ class ItemsController < ApplicationController
 
   expose :q, -> { Item.ransack(search_params) }
   expose :items, -> { q.result(distinct: true).where(user_id: nil).page params[:page] }
-  expose_decorated(:item, decorator: ItemDecorator)
-
-  def index
-  end
+  expose_decorated(:item)
 
   def draw
     DrawWinner.call(item: item)

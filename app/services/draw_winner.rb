@@ -9,6 +9,7 @@ class DrawWinner < BusinessProcess::Base
   def rand_winner
     winner = item.bids.order('RANDOM()').first
     item.user_id = winner.user_id
+    item.save
   end
 
   def send_mail
