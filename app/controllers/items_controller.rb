@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
 
   expose :q, -> { Item.ransack(search_params) }
   expose :items, -> { q.result(distinct: true).where(user_id: nil).page params[:page] }
-  expose :item
+  expose_decorated(:item, decorator: ItemDecorator)
 
   def index
   end

@@ -23,5 +23,5 @@
 <% end %>
 
 
-<%= link_to 'Edit', edit_item_path(item) if is_admin? %> |
+<%= item.edit_link %> |
 <%= link_to 'Back', items_path %>
