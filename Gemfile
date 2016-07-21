@@ -12,7 +12,6 @@ gem 'jbuilder', '~> 2.5'
 gem 'ffaker'
 
 group :development, :test do
-  gem 'sqlite3'
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
   gem 'factory_girl_rails'
