@@ -3,9 +3,9 @@ class ItemsController < ApplicationController
   before_action :authenticate_admin, only: [:destroy, :create, :update, :draw]
   before_action :count_bids, only: [:destroy]
 
-  expose :q, -> { Item.ransack(search_params) }
+  expose :q, -> { Item.friendly.ransack(search_params) }
   expose :items, -> { q.result(distinct: true).where(user_id: nil).page(params[:page]).decorate }
-  expose :item, decorate: ->(item) { item.decorate }
+  expose :item, decorate: ->(item) { item.decorate }, find_by: :slug
 
   def draw
     DrawWinner.call(item: item)
