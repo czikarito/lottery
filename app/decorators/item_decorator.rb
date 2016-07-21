@@ -1,7 +1,12 @@
 class ItemDecorator < Draper::Decorator
   delegate_all
   decorates_finders
+
   include Draper::LazyHelpers
+
+  def self.collection_decorator_class
+    PaginatingDecorator
+  end
 
   def edit_link
     link_to 'Edit', edit_item_path(item) if is_admin?

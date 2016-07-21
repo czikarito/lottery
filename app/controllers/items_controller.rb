@@ -4,8 +4,8 @@ class ItemsController < ApplicationController
   before_action :count_bids, only: [:destroy]
 
   expose :q, -> { Item.ransack(search_params) }
-  expose :items, -> { q.result(distinct: true).where(user_id: nil).page params[:page] }
-  expose_decorated(:item)
+  expose :items, -> { q.result(distinct: true).where(user_id: nil).page(params[:page]).decorate }
+  expose :item, decorate: ->(item) { item.decorate }
 
   def draw
     DrawWinner.call(item: item)
