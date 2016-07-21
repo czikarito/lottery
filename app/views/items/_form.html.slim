@@ -1,0 +1,7 @@
+= simple_form_for item, html: {multipart: true} do |f|
+  = f.error_notification
+  div.form-inputs
+    = f.input :name
+    = f.input :description, as: :text
+    = f.file_field :image
+    = f.button :submit

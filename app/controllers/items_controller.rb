@@ -1,20 +1,14 @@
 class ItemsController < ApplicationController
   respond_to :html, :json
-  before_action :authenticate_admin, only: [:destroy, :create, :update]
+  before_action :authenticate_admin, only: [:destroy, :create, :update, :draw]
   before_action :count_bids, only: [:destroy]
 
-  expose :q, -> { Item.ransack(search_params) }
-  expose :items, -> { q.result(distinct: true).where(user_id: nil).page params[:page] }
-  expose :item
-
-  def index
-  end
+  expose :q, -> { Item.friendly.ransack(search_params) }
+  expose :items, -> { q.result(distinct: true).where(user_id: nil).page(params[:page]).decorate }
+  expose :item, decorate: ->(item) { item.decorate }, find_by: :slug
 
   def draw
-    winner = item.lottery(item)
-    item.user_id = winner
-    item.save
-    UserMailer.send_win_confirmation(item).deliver_now
+    DrawWinner.call(item: item)
   end
 
   def create
@@ -29,8 +23,8 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-      item.destroy
-      respond_with(item)
+    item.destroy
+    respond_with(item)
   end
 
   private
@@ -42,9 +36,7 @@ class ItemsController < ApplicationController
   end
 
   def count_bids
-    unless item.bids.count == 0
-      redirect_to item_path item
-    end
+    redirect_to item_path item unless item.bids.count == 0
   end
 
   def search_params
