@@ -1,7 +1,15 @@
 language: ruby
+
+sudo: false
+cache: bundler
+services: postgresql
+bundler_args: --without development --deployment
 rvm:
- - 2.2
- - jruby
- - rbx-2
-# uncomment and edit the following line if your project needs to run something other than `rake`:
-script: bundle exec rspec spec
+  - 2.3.1
+before_install:
+  - 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
+  - export RAILS_ENV=test
+before_script:
+  - cp -f config/travis/database.yml config/database.yml
+  - bundle exec rake db:create db:migrate
+script: bundle exec rspec --color
