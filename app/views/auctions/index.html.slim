@@ -1,0 +1,12 @@
+- if current_user
+    h2 You won items
+    - won_items.each do |item|
+        li = item.name
+
+    h2 You bidding items
+    - binding_items.each do |item|
+        li = item.name
+
+    h2 You lost items
+    - lost_items.each do |item|
+        li = item.name
