@@ -4,4 +4,3 @@ test:
   database: dm3_wts_test
   pool: 5
   username: postgres
-  password:

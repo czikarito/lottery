@@ -12,6 +12,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'ffaker'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -22,7 +23,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'sqlite3'
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
   gem 'spring'
@@ -49,3 +49,4 @@ gem 'draper', github: 'drapergem/draper'
 gem 'activemodel-serializers-xml'
 gem 'friendly_id'
 gem 'slim-rails'
+gem 'redis'
