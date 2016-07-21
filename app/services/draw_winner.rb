@@ -2,7 +2,7 @@ class DrawWinner < BusinessProcess::Base
   needs :item
 
   steps :can_run_draw,
-        :rand_winner
+        :rand_winner,
         :send_mail
 
   private
