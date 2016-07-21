@@ -13,7 +13,7 @@ class ItemDecorator < Draper::Decorator
   end
 
   def delete_link
-    if is_admin?
+    if is_admin? && can_delete?
       link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }
     end
   end
@@ -26,7 +26,17 @@ class ItemDecorator < Draper::Decorator
     end
   end
 
+  def new_item_link
+    if is_admin?
+      link_to 'New Item', new_item_path
+    end
+  end
+
   private
+
+  def can_delete?
+    item.bids.empty?
+  end
 
   def is_admin?
     current_user && current_user.has_role?(:admin)

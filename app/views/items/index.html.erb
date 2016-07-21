@@ -19,7 +19,7 @@
           <td><%= image_tag item.image.url(:medium) %></td>
           <td><%= link_to 'Show', item %></td>
           <td><%= item.edit_link %></td>
-          <td><%= link_to 'Destroy', item, method: :delete, data: {confirm: 'Are you sure?'} if is_admin? and item.bids.size ==0 %></td>
+          <td><%= item.delete_link %></td>
       </tr>
   <% end %>
   </tbody>
@@ -27,4 +27,4 @@
 
 <br>
 <%= paginate items %>
-<%= link_to 'New Item', new_item_path if is_admin? %>
+<%= item.new_item_link %>
