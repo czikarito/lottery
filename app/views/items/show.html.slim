@@ -1,0 +1,22 @@
+p#notice = notice
+
+p
+  strong Name:
+  = item.name
+
+p
+  strong Description:
+  = item.description
+
+= image_tag item.image.url(:medium)
+= item.run_draw_or_bid
+br
+
+h2 List of bidders
+- item.bids.each do |bid|
+  li = bid.user.email
+
+
+= item.edit_link
+'|
+= link_to 'Back', items_path

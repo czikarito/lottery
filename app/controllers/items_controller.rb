@@ -1,20 +1,14 @@
 class ItemsController < ApplicationController
   respond_to :html, :json
+  before_action :authenticate_admin, only: [:destroy, :create, :update, :draw]
+  before_action :count_bids, only: [:destroy]
 
-  expose :q, -> { Item.ransack(search_params) }
-  expose :items, -> { q.result(distinct: true).where(user_id: nil).page params[:page] }
-  expose :item
-
-  def index
-  end
+  expose :q, -> { Item.friendly.ransack(search_params) }
+  expose :items, -> { q.result(distinct: true).where(user_id: nil).page(params[:page]).decorate }
+  expose :item, decorate: ->(item) { item.decorate }, find_by: :slug
 
   def draw
-      winner = item.lottery(item)
-      item.user_id = winner
-      item.status = 'end'
-      item.save
-      UserMailer.send_win_confirmation(item).deliver_now
-      redirect_to item_path(item)
+    DrawWinner.call(item: item)
   end
 
   def create
@@ -23,11 +17,9 @@ class ItemsController < ApplicationController
   end
 
   def update
-      if item.update(item_params)
-        redirect_to item_path(item), notice: 'Item was successfully updated.'
-      else
-        render :edit
-      end
+    if item.update(item_params)
+      redirect_to item_path(item), notice: 'Item was successfully updated.'
+    end
   end
 
   def destroy
@@ -37,11 +29,21 @@ class ItemsController < ApplicationController
 
   private
 
+  def authenticate_admin
+    unless current_user && current_user.has_role?(:admin)
+      redirect_to new_user_session_path
+    end
+  end
+
+  def count_bids
+    redirect_to item_path item unless item.bids.count == 0
+  end
+
   def search_params
-    params.permit(q: [ :name_cont ])["q"].to_h
+    params.permit(q: [:name_cont])['q'].to_h
   end
 
   def item_params
-      params.require(:item).permit(:name, :description, :image)
-    end
+    params.require(:item).permit(:name, :description, :image)
+  end
 end
