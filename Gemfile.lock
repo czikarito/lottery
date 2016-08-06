@@ -329,8 +329,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap-sass (~> 3.3.6)
   activemodel-serializers-xml
+  bootstrap-sass (~> 3.3.6)
   business_process
   byebug
   cancancan
